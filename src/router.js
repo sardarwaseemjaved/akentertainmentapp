@@ -28,6 +28,7 @@ import { signOutApp } from './auth';
 import VideosList from './components/screens/VideosList';
 import { createBottomTabNavigator, BottomTabBar } from 'react-navigation-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { Icon } from 'native-base'
 // Authorization flow created with help from:
 // https://medium.com/the-react-native-log/building-an-authentication-flow-with-react-navigation-fb5de2203b5c
 
@@ -43,31 +44,39 @@ const TabScreens = createBottomTabNavigator(
   {
     defaultNavigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
+        let iconType, iconFontSize;
         const { routeName } = navigation.state;
         let IconComponent = Ionicons;
         let iconName;
         if (routeName === 'mainMenu') {
-          iconName = `ios-home${focused ? '' : ''}`;
+          iconName = `menu`;
+          // iconName = `ios-home${focused ? '' : ''}`;
           // iconName = `ios-information-circle${focused ? '' : '-outline'}`; 
           // IconComponent = HomeIconWithBadge;
-        } 
+        }
         else if (routeName === 'videos') {
-          iconName = `ios-videocam${focused ? '' : ''}`;
+          iconType = 'Foundation'
+          iconName = `play-video`;
+          iconFontSize = 28
+          // iconName = `ios-videocam${focused ? '' : ''}`;
           // iconName = `ios-information-circle${focused ? '' : '-outline'}`; 
           // IconComponent = HomeIconWithBadge;
         } else if (routeName === 'GlobalChat') {
-          iconName = `ios-text`;
+          iconType = 'MaterialCommunityIcons'
+          iconName = `message-outline`;
         }
 
         // You can return any component that you like here!
-        return <IconComponent name={iconName} size={35} color={tintColor} />;
+        // return <IconComponent name={iconName} size={35} color={tintColor} />;
+        return <Icon type={iconType} name={iconName} size={35} color={tintColor} style={{ color: tintColor, fontSize: iconFontSize || 25 }} />;
       },
     }),
     tabBarOptions: {
       activeTintColor: ThemeColors.primaryColor,
-      inactiveTintColor: ThemeColors.secondaryColor,
+      inactiveTintColor: ThemeColors.primaryColorRgba + '0.6)',
       showLabel: false,
-      style: { backgroundColor: ThemeColors.secondaryColorRgba + '0.8)', borderTopWidth: 0 }
+      style: { backgroundColor: ThemeColors.secondaryColor, borderTopWidth: 0, elevation: 1 }
+      // style: { backgroundColor: ThemeColors.secondaryColorRgba + '0.8)', borderTopWidth: 0 }
     },
   }
 );

@@ -6,6 +6,7 @@ import {
 import Spinner from 'react-native-loading-spinner-overlay';
 import ThemeColors from './../../styles/colors'
 import AppConstants from './../../helpers/constants'
+import { Content } from 'native-base';
 export default Wrapper = (props) => {
   const { style = {}, children, isLoading = false, contentContainerStyle = {} } = props;
   return (
@@ -21,25 +22,28 @@ export default Wrapper = (props) => {
 export const AuthWrapper = (props) => {
   const { style = {}, children, isLoading = false, contentContainerStyle = {} } = props;
   return (
-    <View style={styles.ImageBackgroundStyle} isLoading={isLoading}>
+    <View style={styles.ImageBackgroundStyle}>
       <StatusBar barStyle="light-content" backgroundColor="#16a085" />
       <ImageBackground style={styles.ImageBackgroundStyle} source={require('./../../../assets/images/loginScreen.jpg')}>
-        <KeyboardAvoidingView behavior="padding">
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={styles.emptyView} />
-            <View style={styles.content}>
-              {/* <ImageBackground style={styles.header} source={require('./../../../assets/images/splash.png')}>
+        <Content keyboardShouldPersistTaps='never' enableOnAndroid showsVerticalScrollIndicator={false}>
+          {/* <KeyboardAvoidingView behavior="padding">
+          <ScrollView showsVerticalScrollIndicator={false}> */}
+          <View style={styles.emptyView} />
+          <View style={styles.content}>
+            {/* <ImageBackground style={styles.header} source={require('./../../../assets/images/splash.png')}>
               </ImageBackground> */}
-              <View style={styles.header}>
-                <Image
-                  style={styles.logoImage} source={require('./../../../assets/images/akLogo.png')} />
-              </View>
-              {children}
+            <View style={styles.header}>
+              <Image
+                style={styles.logoImage} source={require('./../../../assets/images/akLogo.png')} />
             </View>
-            <View style={styles.emptyView} />
-          </ScrollView>
-        </KeyboardAvoidingView>
+            {children}
+          </View>
+          <View style={styles.emptyView} />
+          {/* </ScrollView>
+        </KeyboardAvoidingView> */}
+        </Content>
       </ImageBackground>
+      <Spinner visible={isLoading} />
     </View>
   )
 }
@@ -60,12 +64,12 @@ const styles = StyleSheet.create({
     width: AppConstants.screenWidth - 30,
     height: AppConstants.screenHeight / 3,
     // resizeMode: 'center'
-    alignItems:'center',justifyContent:'center',
+    alignItems: 'center', justifyContent: 'center',
     borderRadius: 60, overflow: 'hidden'
   },
   logoImage: {
-    resizeMode:'contain',
-    height: (AppConstants.screenHeight / 3)-70,
+    resizeMode: 'contain',
+    height: (AppConstants.screenHeight / 3) - 70,
   },
   content: {
     // marginTop: 50,

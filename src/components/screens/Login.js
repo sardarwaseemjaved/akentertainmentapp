@@ -121,7 +121,7 @@ export default class Login extends Component {
   render() {
     return (
       <Container>
-        <AuthWrapper>
+        <AuthWrapper isLoading={this.state.isLoading}>
           <View style={{ width: '100%', paddingHorizontal: 30 }}>
             <Text style={styles.pageHeading}>LOGIN</Text>
           </View>
