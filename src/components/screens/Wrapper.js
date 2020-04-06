@@ -10,20 +10,25 @@ import { Content } from 'native-base';
 export default Wrapper = (props) => {
   const { style = {}, children, isLoading = false, contentContainerStyle = {} } = props;
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" >
-      <ScrollView contentContainerStyle={contentContainerStyle} style={[styles.container, style]}>
-        <StatusBar barStyle="dark-content" backgroundColor="#16a085" />
-        {children}
-        <Spinner visible={isLoading} />
-      </ScrollView>
-    </KeyboardAvoidingView>
+    <Content
+      keyboardShouldPersistTaps='never' enableOnAndroid
+      contentContainerStyle={[{ flex: 1 }, contentContainerStyle]} style={[styles.container, style]}
+    >
+
+      <StatusBar barStyle="dark-content" backgroundColor="#16a085" />
+
+      {children}
+
+      <Spinner visible={isLoading} />
+
+    </Content>
   )
 }
 export const AuthWrapper = (props) => {
   const { style = {}, children, isLoading = false, contentContainerStyle = {} } = props;
   return (
     <View style={styles.ImageBackgroundStyle}>
-      <StatusBar barStyle="light-content" backgroundColor="#16a085" />
+      <StatusBar barStyle="light-content" backgroundColor="#000000" />
       <ImageBackground style={styles.ImageBackgroundStyle} source={require('./../../../assets/images/loginScreen.jpg')}>
         <Content keyboardShouldPersistTaps='never' enableOnAndroid showsVerticalScrollIndicator={false}>
           {/* <KeyboardAvoidingView behavior="padding">

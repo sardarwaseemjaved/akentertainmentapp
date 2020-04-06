@@ -122,7 +122,7 @@ export default class VideosList extends React.Component {
                 //     await this.setState({ videos: this.state.videos, isLoading: false })
                 // })
                 // setVideos([])
-                 
+
                 // videosList.push(
                 //     {
                 //         thumbnail: 'https://pbs.twimg.com/profile_images/684200142245904384/a124QTD5_400x400.jpg',
@@ -167,20 +167,90 @@ export default class VideosList extends React.Component {
         //     });
     }
     getLocalVideosList = async () => {
-        // this.state.videos.push({ thumbnail: 'https://pbs.twimg.com/profile_images/684200142245904384/a124QTD5_400x400.jpg', url: 'https://drive.google.com/uc?export=download&id=1HOMRp8U3W35uq6wuAhtXz8fK1SpxrdNR' })
-        // await this.setState({ videos: this.state.videos, isLoading: false })
-        getVideos()
-            .then((videos) => {
-                if (videos.length > 0) {
-                    console.log(videos)
-                    this.setState({ videos, isLoading: false })
-                }
-                this.getVideosFromDB()
-            })
-            .catch(function (error) {
-                this.setState({ isLoading: false })
-                console.error(error.message)
-            });
+        let videos = [
+            {
+                "id": "AK-Ent-V01",
+                "name": "Antriksh na shahrukh khan",
+                "thumbnail": "https://res.cloudinary.com/db6evrrlt/image/upload/v1586145531/Thumbnails/Untitled-1_ngjdqv.png",
+                "url": "https://res.cloudinary.com/db6evrrlt/video/upload/v1586137905/3_Idiots-lq_ldvl61.mp4",
+            },
+            {
+                "id": "AK-Ent-V01",
+                "name": "Antriksh na shahrukh khan2",
+                "thumbnail": "https://res.cloudinary.com/db6evrrlt/image/upload/v1586145956/Thumbnails/Untitled-1_ofm3da.png",
+                "url": "https://res.cloudinary.com/db6evrrlt/video/upload/v1586138111/Afridi_x0whlq.mp4",
+            },
+            {
+                "id": "AK-Ent-V01",
+                "name": "Antriksh na shahrukh khan",
+                "thumbnail": "https://s1.dmcdn.net/v/PfwlW1SY-SGvZSkZ4/x240",
+                "url": "https://res.cloudinary.com/db6evrrlt/video/upload/v1586138166/Mosu_final_djz1uy.mp4"
+            },
+            {
+                "id": "AK-Ent-V01",
+                "name": "Antriksh na shahrukh khan",
+                "thumbnail": "https://cdn.cinematerial.com/p/297x/6zxzled3/war-indian-movie-poster-md.jpg?v=1565680531",
+                "url": "https://firebasestorage.googleapis.com/v0/b/ak-entertainment.appspot.com/o/akVideos%2Fy2mate.com%20-%20antriksh_na_shahrukh_khan_ak_entertainment_kashmir_funny_pahaari_dubbed_M53M1vGUVak_144p.mp4?alt=media&token=0c755405-72ec-41dc-b535-7a87d8afcb25",
+            },
+            {
+                "id": "AK-Ent-V01",
+                "name": "Antriksh na shahrukh khan",
+                "thumbnail": "https://i.pinimg.com/236x/aa/c4/13/aac4131328170362436f6d687921305f.jpg",
+                "url": "https://firebasestorage.googleapis.com/v0/b/ak-entertainment.appspot.com/o/akVideos%2Fy2mate.com%20-%20antriksh_na_shahrukh_khan_ak_entertainment_kashmir_funny_pahaari_dubbed_M53M1vGUVak_144p.mp4?alt=media&token=0c755405-72ec-41dc-b535-7a87d8afcb25",
+            },
+            {
+                "id": "AK-Ent-V01",
+                "name": "Antriksh na shahrukh khan",
+                "thumbnail": "https://wirally.com/wp-content/uploads/2019/06/2-RRR-Trailer.jpg",
+                "url": "https://firebasestorage.googleapis.com/v0/b/ak-entertainment.appspot.com/o/akVideos%2Fy2mate.com%20-%20antriksh_na_shahrukh_khan_ak_entertainment_kashmir_funny_pahaari_dubbed_M53M1vGUVak_144p.mp4?alt=media&token=0c755405-72ec-41dc-b535-7a87d8afcb25",
+            },
+            {
+                "id": "AK-Ent-V01",
+                "name": "Antriksh na shahrukh khan",
+                "thumbnail": "https://d12swbtw719y4s.cloudfront.net/images/uNQCxPhI/JnWQHaO6zOHye1ZcTxUs/TTb66rxX1n.jpeg?w=1200",
+                "url": "https://firebasestorage.googleapis.com/v0/b/ak-entertainment.appspot.com/o/akVideos%2Fy2mate.com%20-%20antriksh_na_shahrukh_khan_ak_entertainment_kashmir_funny_pahaari_dubbed_M53M1vGUVak_144p.mp4?alt=media&token=0c755405-72ec-41dc-b535-7a87d8afcb25",
+            },
+            {
+                "id": "AK-Ent-V01",
+                "name": "Antriksh na shahrukh khan",
+                "thumbnail": "https://lh3.googleusercontent.com/proxy/tEM2FUv3M5NilMPV4vPkkF0irFGe8yHDzFZp_3hoFSQ_9pXqVvldQGpKCvIHh4irBO_IPNXb-mx1pirjtO13VTyqHKktCCB9fSbeGJ4SuWfuD-R2OKfqRdqna13XQSoLfys6",
+                "url": "https://firebasestorage.googleapis.com/v0/b/ak-entertainment.appspot.com/o/akVideos%2Fy2mate.com%20-%20antriksh_na_shahrukh_khan_ak_entertainment_kashmir_funny_pahaari_dubbed_M53M1vGUVak_144p.mp4?alt=media&token=0c755405-72ec-41dc-b535-7a87d8afcb25",
+            },
+            {
+                "id": "AK-Ent-V01",
+                "name": "Antriksh na shahrukh khan",
+                "thumbnail": "https://www.gravillisinc.com/wp-content/uploads/2018/12/TKWWBK_FINISH_web-300x444.jpg",
+                "url": "https://firebasestorage.googleapis.com/v0/b/ak-entertainment.appspot.com/o/akVideos%2Fy2mate.com%20-%20antriksh_na_shahrukh_khan_ak_entertainment_kashmir_funny_pahaari_dubbed_M53M1vGUVak_144p.mp4?alt=media&token=0c755405-72ec-41dc-b535-7a87d8afcb25",
+            },
+            {
+                "id": "AK-Ent-V01",
+                "name": "Antriksh na shahrukh khan",
+                "thumbnail": "https://cdn5.f-cdn.com/contestentries/1460244/31844628/5c1babdca7118_thumb900.jpg",
+                "url": "https://firebasestorage.googleapis.com/v0/b/ak-entertainment.appspot.com/o/akVideos%2Fy2mate.com%20-%20antriksh_na_shahrukh_khan_ak_entertainment_kashmir_funny_pahaari_dubbed_M53M1vGUVak_144p.mp4?alt=media&token=0c755405-72ec-41dc-b535-7a87d8afcb25",
+            },
+            {
+                "id": "AK-Ent-V01",
+                "name": "Antriksh na shahrukh khan",
+                "thumbnail": "https://wallpapercave.com/wp/wp5171869.jpg",
+                "url": "https://firebasestorage.googleapis.com/v0/b/ak-entertainment.appspot.com/o/akVideos%2Fy2mate.com%20-%20antriksh_na_shahrukh_khan_ak_entertainment_kashmir_funny_pahaari_dubbed_M53M1vGUVak_144p.mp4?alt=media&token=0c755405-72ec-41dc-b535-7a87d8afcb25",
+            },
+            
+        ]
+        this.setState({ videos, isLoading: false })
+        // // this.state.videos.push({ thumbnail: 'https://pbs.twimg.com/profile_images/684200142245904384/a124QTD5_400x400.jpg', url: 'https://drive.google.com/uc?export=download&id=1HOMRp8U3W35uq6wuAhtXz8fK1SpxrdNR' })
+        // // await this.setState({ videos: this.state.videos, isLoading: false })
+        // getVideos()
+        //     .then((videos) => {
+        //         if (videos.length > 0) {
+        //             console.log(videos)
+        //             this.setState({ videos, isLoading: false })
+        //         }
+        //         this.getVideosFromDB()
+        //     })
+        //     .catch(function (error) {
+        //         this.setState({ isLoading: false })
+        //         console.error(error.message)
+        //     });
     }
     componentDidMount() {
         this.getLocalVideosList()

@@ -276,7 +276,7 @@ class API {
     // const currentLikeVlaue = await this.dbRef.child('/videoLikes/' + videoId).once('value')
     // return snapshotToArray(currentLikeVlaue)
     let snapshot = await firestoreDb.collection('videoLikes').doc(videoId).get()
-    return snapshot.docs.map(doc => doc.data())
+    return snapshot.docs?.map(doc => doc.data())
   }
   updateVideoLikesCounter = async (videoId, userId, action) => {
     try {

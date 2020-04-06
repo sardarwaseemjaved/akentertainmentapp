@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, Platform, KeyboardAvoidingView, ImageBackground } from 'react-native';
+import { View, StyleSheet, Text, Platform, KeyboardAvoidingView, ImageBackground, Keyboard, TextInput } from 'react-native';
 import { GiftedChat, Bubble, Time } from 'react-native-gifted-chat';
 import api from './../../api';
 import * as firebase from 'firebase';
@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { signOutUser, setLocalUserProfile, getLocalUserProfile, getUserProfile } from '../../auth';
 import ThemeColors from './../../styles/colors'
 import { setMessages, getMessages } from './../../helpers/asyncStorage'
+import Wrapper from './Wrapper';
 mapStateToProps = (state) => {
   const { auth } = state;
   return { auth }
@@ -24,21 +25,39 @@ class GlobalChat extends Component {
       messages: [],
     };
   }
+
+  _keyboardDidShow = (e) => {
+    let keyboardHeight = e.endCoordinates.height;
+    this.setState({ minInputToolbarHeight: keyboardHeight + 45 });
+  }
+
+  _keyboardDidHide = () => {
+    this.setState({ minInputToolbarHeight: 45 });
+  }
+
   getLocalMessages = async () => {
     let messages = await getMessages();
     if (messages != null) {
       this.setState({ messages })
     }
   }
-  async componentDidMount() { 
+  async componentDidMount() {
+    // if (Platform.OS === 'ios') {
+    //   this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
+    //   this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
+    // }
     api.loadMessages(async (message) => {
       await this.setState(previousState => ({
         messages: GiftedChat.append(previousState.messages, message),
-      })); 
+      }));
     });
   }
 
   componentWillUnmount() {
+    // if (Platform.OS === 'ios') {
+    //   this.keyboardDidShowListener?.remove();
+    //   this.keyboardDidHideListener?.remove();
+    // }
     api.closeChat();
   }
   renderTime = props => {
@@ -54,7 +73,7 @@ class GlobalChat extends Component {
       <View style={[styles.bubbleContainer, {
         marginLeft: props.position == "left" ? 0 : 60,
         marginRight: props.position == "left" ? 60 : 0,
-        backgroundColor: props.position == "left" ? ThemeColors.secondaryColorRgba + '0.8)' : ThemeColors.primaryColorRgba + '0.8)',
+        backgroundColor: props.position == "left" ? ThemeColors.secondaryColorRgba + '0.3)' : ThemeColors.primaryColorRgba + '0.1)',
       }]}
       >
         <Bubble
@@ -68,18 +87,33 @@ class GlobalChat extends Component {
   render() {
     const { messages } = this.state;
     const { name, userColor } = this.props.auth;
+    let platformConf = Platform.OS === 'ios' ? {
+      minInputToolbarHeight: this.state.minInputToolbarHeight,
+      bottomOffset: 0,
+    } : {};
     return (
       <ImageBackground style={styles.container} source={require('./../../../assets/images/loginScreen.jpg')}>
+        {/* <Wrapper> */}
         <GiftedChat
+          // forceGetKeyboardHeight={false}
+          // bottomOffset={0}
+          keyboardShouldPersistTaps={'never'}
+          renderUsernameOnMessage
+          // renderComposer={() => <View style={{ backgroundColor: 'red', height: 40, flex: 1 }}>
+          //   <TextInput />
+          // </View>}
+          isKeyboardInternallyHandled={false}
           renderTime={this.renderTime}
           renderBubble={this.renderBubble}
           messages={messages}
           onSend={(message) => api.sendMessage(message)}
           user={{ _id: api.getUid(), name, userColor }}
+        // {...platformConf}
         />
         {
           Platform.OS === 'android' && <KeyboardAvoidingView behavior="padding" />
         }
+        {/* </Wrapper> */}
       </ImageBackground>
     );
   }
