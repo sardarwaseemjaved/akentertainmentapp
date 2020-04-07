@@ -1,13 +1,23 @@
 export default themeColors = {
-    primaryColor:'#F5DB57',
-    primaryColorRgba:'rgba(245, 219, 87,',
 
-    // secondaryColor:'#2E3B43', 
-    secondaryColor:'#303030', 
-    secondaryColorRgba:'rgba(48, 48, 48,',
+    //yellow
+    // primaryColor:'#F5DB57',
+    // primaryColorRgba:'rgba(245, 219, 87,',
 
-    backgroundColor:'#282828',
+    //green neon
+    primaryColor:'#c7ea46',
+    primaryColorRgba:'rgba(199, 234, 70,',
 
-    highlightsColor:'#000000', 
-    highlightsColorRgba:'rgba(46, 59, 67,',
+    //dark yellow
+    // primaryColor: '#FFD52B',
+    // primaryColorRgba: 'rgba(255,213,43,',
+
+    // secondaryColor:'#2E3B43',  
+    secondaryColor: '#303030',
+    secondaryColorRgba: 'rgba(48, 48, 48,',
+
+    backgroundColor: '#000000',
+
+    highlightsColor: '#000000',
+    highlightsColorRgba: 'rgba(0, 0, 0,',
 }

@@ -75,7 +75,7 @@ const TabScreens = createBottomTabNavigator(
       activeTintColor: ThemeColors.primaryColor,
       inactiveTintColor: ThemeColors.primaryColorRgba + '0.6)',
       showLabel: false,
-      style: { backgroundColor: ThemeColors.highlightsColor, borderTopWidth: 0, elevation: 1 }
+      style: { backgroundColor: ThemeColors.secondaryColor, borderTopWidth: 0, elevation: 1 }
       // style: { backgroundColor: ThemeColors.secondaryColorRgba + '0.8)', borderTopWidth: 0 }
     },
   }

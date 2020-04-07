@@ -44,10 +44,11 @@ import CustomSlider from '../shared/Slider'
 // }
 
 class PlaylistItem {
-    constructor(name, uri, isVideo) {
+    constructor(name, uri, isVideo, thumbnail) {
         this.name = name;
         this.uri = uri;
         this.isVideo = isVideo;
+        this.thumbnail = thumbnail
     }
 }
 
@@ -161,7 +162,8 @@ export default class CustomPlayer extends React.Component {
                 return (new PlaylistItem(
                     val.name,
                     val.url,
-                    true
+                    true,
+                    val.thumbnail
                 ))
             }),
             volume: 1,
@@ -193,7 +195,7 @@ export default class CustomPlayer extends React.Component {
     componentDidUpdate(prevProps, prevState) {
         if (prevProps.playlist.length != this.state.PLAYLIST.length) {
             this.state.PLAYLIST = this.props.playlist.map((val, index) => {
-                return (new PlaylistItem(val.name, val.url, true))
+                return (new PlaylistItem(val.name, val.url, true, val.thumbnail))
             });
             this.setState({ PLAYLIST: this.state.PLAYLIST })
             this.setVideoLikes()
@@ -794,24 +796,10 @@ export default class CustomPlayer extends React.Component {
         const { videoLikedBy } = this.state;
         return (
 
-            <View
-                style={styles.container}
-            // style={{ flex: 1, backgroundColor: ThemeColors.backgroundColor }}
-            >
+            <View style={styles.container}>
                 <ImageBackground style={styles.titleSliderContainerImage} source={require('./../../../assets/images/loginScreen.jpg')}>
 
                     <StatusBar hidden={true} />
-                    {/* <View />
-
-                    <View style={styles.nameContainer}>
-                        <Text style={[styles.text, { fontFamily: "cutive-mono-regular" }]}>
-                            {this.state.playbackInstanceName}
-                        </Text>
-                    </View> */}
-                    {/* <View style={styles.space} /> */}
-
-
-
 
                     {/* /////////////////////////////  VIDEO CONTAINER  /////////////////////////////////// */}
                     <View style={[styles.videoContainer, { position: 'absolute' }]}>
@@ -854,147 +842,171 @@ export default class CustomPlayer extends React.Component {
                                     this.state.videoHeight,
                             }
                         ]} >
-                        <TouchableWithoutFeedback style={styles.flex1} onPress={this.showPlayerControls}>
-                            {
-                                !this.state.fontLoaded ?
-                                    <ActivityIndicator color={ThemeColors.primaryColor} size={'large'} style={styles.loadingIndicator} />
-                                    :
-                                    <>
-                                        {
-                                            !this.state.showPlayerControls && this.state.isPlaying
-                                                ?
-                                                <TouchableOpacity onPress={this.showPlayerControls} style={styles.videoOverlayTouch} />
-                                                :
-                                                <View style={styles.videoBackground}>
-                                                    <View style={styles.videoOverlayContainer}>
+                        <View style={styles.flex1} onPress={this.showPlayerControls}>
+                            {!this.state.fontLoaded ?
+                                <ActivityIndicator color={ThemeColors.primaryColor} size={'large'} style={styles.loadingIndicator} />
+                                :
+                                <>
+                                    {!this.state.showPlayerControls && this.state.isPlaying
+                                        ?
+                                        <TouchableOpacity onPress={this.showPlayerControls} style={styles.videoOverlayTouch} />
+                                        :
+                                        <View style={styles.videoBackground}>
+                                            <TouchableOpacity activeOpacity={1} onPress={this.showPlayerControls}
+                                                style={[styles.videoOverlayContainer]}>
 
-                                                        <View style={styles.videoOverlayCol1}                                                    >
-                                                            <TouchableOpacity
-                                                                onPress={this._onPlayPausePressed}
-                                                                style={[styles.playPauseButton]}
-                                                                disabled={this.state.isLoading}
-                                                            >
-                                                                <Image
-                                                                    style={[styles.playPauseButton]}
-                                                                    source={
-                                                                        this.state.isPlaying
-                                                                            ? require('./../../../assets/videoIcons/pause.png')
-                                                                            : require('./../../../assets/videoIcons/play.png')
-                                                                    }
-                                                                />
-                                                            </TouchableOpacity>
-
-                                                            {/* <View>
-                                                            <Text numberOfLines={2} style={{ color: ThemeColors.primaryColor, fontSize: 30, marginTop: 30 }}>
-                                                                {this.state.PLAYLIST[this.index].name}
-                                                            </Text>
-                                                        </View> */}
-                                                        </View>
-
-                                                        <View style={styles.actionButtonContainer}>
-
-                                                            <TouchableOpacity
-                                                                onPress={this.onShare}
-                                                            // onPress={this._onPlayPausePressed}
-                                                            >
-                                                                <Image
-                                                                    style={[styles.actionButton]}
-                                                                    source={require('./../../../assets/videoIcons/share.png')}
-                                                                />
-                                                            </TouchableOpacity>
-                                                            <TouchableOpacity
-                                                                style={{ marginTop: 10 }}
-                                                                onPress={this.donwloadFile}
-                                                            >
-                                                                <Image
-                                                                    style={[styles.actionButton]}
-                                                                    source={require('./../../../assets/videoIcons/download.png')}
-                                                                />
-                                                            </TouchableOpacity>
-                                                            <TouchableOpacity
-                                                                style={{ marginTop: 10 }}
-                                                                onPress={this.onBombPress}
-                                                            >
-                                                                <Image
-                                                                    style={[styles.actionButton, {
-                                                                        opacity: videoLikedBy?.includes(this.props.navigation.getParam('user')?.uid) ? 1 : 0.5
-                                                                    }]}
-                                                                    source={require('./../../../assets/videoIcons/bomb.png')}
-                                                                />
-                                                            </TouchableOpacity>
-                                                        </View>
-                                                    </View>
-                                                    {/* <View>
-                                                    <Slider
-                                                        thumbTintColor='#F5DB57'
-                                                        maximumTrackTintColor='#BA9702'
-                                                        minimumTrackTintColor='#F5DB57'
-                                                        style={styles.playbackSlider}
-                                                        // trackImage={ICON_TRACK_1.module}
-                                                        // thumbImage={ICON_THUMB_1.module}
-                                                        value={this._getSeekSliderPosition()}
-                                                        onValueChange={this._onSeekSliderValueChange}
-                                                        onSlidingComplete={this._onSeekSliderSlidingComplete}
+                                                <View style={styles.videoOverlayCol1}                                                    >
+                                                    <TouchableOpacity
+                                                        onPress={this._onPlayPausePressed}
+                                                        style={[styles.playPauseButton]}
                                                         disabled={this.state.isLoading}
-                                                    />
-                                                </View> */}
+                                                    >
+                                                        <Image
+                                                            resizeMode='contain'
+                                                            style={[styles.playPauseButton]}
+                                                            source={
+                                                                this.state.isPlaying
+                                                                    ? require('./../../../assets/videoIcons/pause.png')
+                                                                    : require('./../../../assets/videoIcons/play.png')
+                                                            }
+                                                        />
+                                                    </TouchableOpacity>
 
                                                 </View>
-                                        }
-                                    </>
+                                                <View style={styles.videoControlsRow}>
+                                                    <Icon
+                                                        onPress={this._onMutePressed}
+                                                        style={[styles.nowPlayingIcon, styles.fullscreenIcon]}
+                                                        name={this.state.muted ? 'volume-mute' : 'volume-high'}
+                                                        type='MaterialCommunityIcons'
+                                                    />
+                                                    <Icon
+                                                        onPress={this._onFullscreenPressed}
+                                                        style={[styles.nowPlayingIcon, styles.fullscreenIcon]}
+                                                        name='fullscreen'
+                                                        type='MaterialCommunityIcons'
+                                                    />
+                                                </View>
+                                            </TouchableOpacity>
+                                            <View style={{ position: 'absolute', bottom: 0, left: 0, flex: 1, width: DEVICE_WIDTH }}>
+                                                <CustomSlider
+                                                    maximumTrackTintColor={ThemeColors.primaryColorRgba + '0.2)'}
+                                                    minimumTrackTintColor={ThemeColors.primaryColor}
+                                                    value={this._getSeekSliderPosition()}
+                                                    onValueChange={this._onSeekSliderValueChange}
+                                                    onSlidingComplete={this._onSeekSliderSlidingComplete}
+                                                    disabled={this.state.isLoading}
+                                                    // style={{paddingTop:0, backgroundColor:'green'}}
+                                                    trackStyle={styles.track}
+                                                    thumbStyle={[styles.thumb,
+                                                    // (!this.state.showPlayerControls && (!this._getTimestamp().split('/')[0] || this._getTimestamp().split('/')[0].includes('00:00'))) ||
+                                                    // (!this.state.showPlayerControls && this.state.isPlaying)
+                                                    // && 
+                                                    // { opacity: 0 }
+                                                    ]}
+                                                />
+                                            </View>
+
+                                            <View style={styles.timeContainer}>
+                                                <Text style={styles.nowPlayingLabel}>{this._getTimestamp().split('/')[0]}</Text>
+                                                <View style={styles.flex1} />
+                                                <Text style={styles.nowPlayingLabel}>{this._getTimestamp().split('/')[1]}</Text>
+                                            </View>
+                                        </View>
+                                    }
+                                </>
                             }
-                        </TouchableWithoutFeedback>
+                        </View>
                     </View>
-                    <View style={styles.titleSliderContainer}>
+                    <View
+                    // style={styles.titleSliderContainer}
+                    >
+                        {/* <View style={{ position: 'absolute', top: 0, left: 0, flex: 1, width: DEVICE_WIDTH }}>
+                            <CustomSlider
+                                maximumTrackTintColor={ThemeColors.primaryColorRgba + '0.2)'}
+                                minimumTrackTintColor={ThemeColors.primaryColor}
+                                value={this._getSeekSliderPosition()}
+                                onValueChange={this._onSeekSliderValueChange}
+                                onSlidingComplete={this._onSeekSliderSlidingComplete}
+                                disabled={this.state.isLoading}
+                                // style={{paddingTop:0, backgroundColor:'green'}}
+                                trackStyle={styles.track}
+                                thumbStyle={[styles.thumb,
+                                // (!this.state.showPlayerControls && (!this._getTimestamp().split('/')[0] || this._getTimestamp().split('/')[0].includes('00:00'))) ||
+                                // (!this.state.showPlayerControls && this.state.isPlaying)
+                                // && 
+                                { opacity: 0 }
+                                ]}
+                            />
+                        </View>
+
+                        <View style={styles.timeContainer}>
+                            <Text style={styles.nowPlayingLabel}>{this._getTimestamp().split('/')[0]}</Text>
+                            <View style={styles.flex1} />
+                            <Text style={styles.nowPlayingLabel}>{this._getTimestamp().split('/')[1]}</Text>
+                        </View> */}
                         <View style={styles.nowPlayingRow}>
-                            <View style={styles.row}>
-                                {/* <Icon style={styles.nowPlayingIcon} name='video-vintage' type='MaterialCommunityIcons' /> */}
-                                <Text numberOfLines={1} style={styles.nowPlayingLabel}>
-                                    {/* now playing...{' '} */}
-                                    <Text style={styles.videoTitle}>
-                                        {this.state.PLAYLIST[this.index].name}
-                                    </Text>
+                            <Image
+                                resizeMode='cover'
+                                style={styles.currentVideoThumb}
+                                source={{ uri: this.state.PLAYLIST[this.index].thumbnail }}
+                            />
+                            <View style={[styles.videoMetaContainer]}>
+                                <Text numberOfLines={1} style={[styles.nowPlayingLabel, styles.videoTitle]}>
+                                    <Icon type='MaterialCommunityIcons' name='filmstrip' style={styles.starIcon} />
+                                    {' '}{this.state.PLAYLIST[this.index].name}
+                                </Text>
+                                <Text numberOfLines={1} style={[styles.nowPlayingLabel, styles.videoMeta]}>
+                                    <Icon type='MaterialCommunityIcons' name='calendar' style={styles.starIcon} />
+                                    {' '}20 Jan 2018
+                                </Text>
+                                <Text numberOfLines={1} style={[styles.nowPlayingLabel, styles.videoMeta]}>
+                                    <Icon type='MaterialCommunityIcons' name='star-circle-outline' style={styles.starIcon} />
+                                    {' '}Waseem Javed, Adnan Altaf, Kashan Khan
                                 </Text>
                             </View>
-                            {/* <Text style={styles.nowPlayingLabel}>{this._getTimestamp()}</Text> */}
-                            <Icon onPress={this._onFullscreenPressed} style={[styles.nowPlayingIcon, styles.fullscreenIcon]} name='fullscreen' type='MaterialCommunityIcons' />
-                        </View>
-                        <View style={styles.sliderContainer}>
-                            <Text style={styles.nowPlayingLabel}>{this._getTimestamp().split('/')[0]}</Text>
-                            <View style={styles.flex1}>
-                                <CustomSlider
-                                    maximumTrackTintColor={ThemeColors.primaryColorRgba + '0.3)'}
-                                    minimumTrackTintColor={ThemeColors.primaryColor}
-                                    value={this._getSeekSliderPosition()}
-                                    onValueChange={this._onSeekSliderValueChange}
-                                    onSlidingComplete={this._onSeekSliderSlidingComplete}
-                                    disabled={this.state.isLoading}
 
-                                    trackStyle={styles.track}
-                                    thumbStyle={styles.thumb}
-                                    minimumTrackTintColor={ThemeColors.primaryColorRgba + '0.5)'}
-                                />
-                                {/* <Slider
-                                    thumbTintColor={ThemeColors.primaryColor}
-                                    maximumTrackTintColor={ThemeColors.primaryColorRgba + '0.3)'}
-                                    minimumTrackTintColor={ThemeColors.primaryColor}
-                                    style={styles.playbackSlider}
-                                    // trackImage={ICON_TRACK_1.module}
-                                    // thumbImage={ICON_THUMB_1.module}
-                                    value={this._getSeekSliderPosition()}
-                                    onValueChange={this._onSeekSliderValueChange}
-                                    onSlidingComplete={this._onSeekSliderSlidingComplete}
-                                    disabled={this.state.isLoading}
-                                /> */}
-                            </View>
-                            <Text style={styles.nowPlayingLabel}>{this._getTimestamp().split('/')[1]}</Text>
                         </View>
+
                     </View>
+                    {/* <View style={styles.row}>
+
+                        <TouchableOpacity
+                            onPress={this.onShare}
+                        // onPress={this._onPlayPausePressed}
+                        >
+                            <Image
+                                style={[styles.actionButton]}
+                                source={require('./../../../assets/videoIcons/share.png')}
+                            />
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            // style={{ marginTop: 10 }}
+                            onPress={this.donwloadFile}
+                        >
+                            <Image
+                                style={[styles.actionButton]}
+                                source={require('./../../../assets/videoIcons/download.png')}
+                            />
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            // style={{ marginTop: 10 }}
+                            onPress={this.onBombPress}
+                        >
+                            <Image
+                                style={[styles.actionButton, {
+                                    opacity: videoLikedBy?.includes(this.props.navigation.getParam('user')?.uid) ? 1 : 0.5
+                                }]}
+                                source={require('./../../../assets/videoIcons/bomb.png')}
+                            />
+                        </TouchableOpacity>
+                    </View> */}
 
                     {/* /////////////////////////////  VIDEO List CONTAINER /////////////////////////////////// */}
 
                     <View style={styles.videoListContainer}>
                         <FlatList
+                            columnWrapperStyle={styles.columnWrapperStyle}
                             keyExtractor={(item, index) => index}
                             numColumns={3}
                             renderItem={this.renderVideoListItem}
@@ -1004,7 +1016,7 @@ export default class CustomPlayer extends React.Component {
                     </View>
 
                 </ImageBackground>
-            </View>
+            </View >
         );
     }
     renderVideoListItem = ({ item, index }) => {
@@ -1024,18 +1036,49 @@ export default class CustomPlayer extends React.Component {
 }
 
 const styles = StyleSheet.create({
+    videoControlsRow: {
+        flexDirection: 'row',
+        marginHorizontal: 5,
+        alignSelf: 'flex-end',
+    },
+    columnWrapperStyle: {
+        flex: 1,
+        justifyContent: 'space-evenly',
+        paddingVertical: 5
+    },
+    starIcon: {
+        color: ThemeColors.primaryColor,
+        fontSize: 10,
+    },
+    videoMetaContainer: {
+        flex: 1,
+        justifyContent: 'center'
+    },
+    currentVideoThumb: {
+        width: 50,
+        height: 50,
+        borderRadius: 50,
+        backgroundColor: ThemeColors.highlightsColorRgba + '0.1)'
+    },
     track: {
-        height: 5,
-        borderRadius: 2,
-        backgroundColor: 'transparent',
+        height: 8,
+        borderRadius: 0,
+        // backgroundColor: 'transparent',
         borderColor: ThemeColors.primaryColorRgba + '0.5)',
-        borderWidth: 0.5,
+        backgroundColor: ThemeColors.highlightsColorRgba + '0.5)',
+        // borderWidth: 0.5,
+        // borderRightWidth:0
     },
     thumb: {
-        width: 5,
-        height: 14,
+        // elevation: 1,
+        // shadowColor: ThemeColors.highlightsColor,
+        // shadowOffset: { width: 0, height: 1 },
+        // shadowOpacity: 0.8,
+        // shadowRadius: 1,
+        width: 8,
+        height: 8,
         borderRadius: 2,
-        backgroundColor: ThemeColors.highlightsColor,
+        backgroundColor: ThemeColors.primaryColor,
         borderColor: ThemeColors.primaryColor,
         borderWidth: 1,
     },
@@ -1044,7 +1087,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         padding: 15,
-        paddingTop: 30
+        paddingTop: 30,
+        backgroundColor: ThemeColors.highlightsColorRgba + '0.5)',
     },
     videoBackground: {
         flex: 1,
@@ -1067,9 +1111,12 @@ const styles = StyleSheet.create({
     },
     nowPlayingRow: {
         flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginRight: 5
+        backgroundColor: ThemeColors.highlightsColorRgba + '1)',
+        paddingVertical: 5,
+        marginTop: 2.5,
+        // alignItems: 'center',
+        // justifyContent: 'space-between',
+        paddingRight: 1.5
     },
 
     sliderContainer: {
@@ -1088,33 +1135,54 @@ const styles = StyleSheet.create({
         // shadowOpacity: 0.8,
         // shadowRadius: 1,
         backgroundColor: ThemeColors.highlightsColor,
-        paddingVertical: 5,
+        // paddingVertical: 5,
         // marginVertical: 1,
-        paddingHorizontal: 20,
+        // paddingHorizontal: 20,
         // borderBottomLeftRadius: 20,
         // borderBottomRightRadius: 20,
     },
+    timeContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        height: 8,
+        width: DEVICE_WIDTH,
+        // marginTop: 2,
+        // backgroundColor: ThemeColors.highlightsColorRgba + '0.3)',
+        // marginHorizontal: 10
+    },
     nowPlayingLabel: {
+        elevation: 1,
+        color: ThemeColors.primaryColor,
+        fontSize: 6,
+        marginHorizontal: 5,
+        textShadowColor: ThemeColors.highlightsColor,
+        textShadowOffset: { width: 0, height: 1 },
+        textShadowRadius: 1,
+        textAlignVertical: 'center'
+    },
+    videoMeta: {
         color: ThemeColors.primaryColor,
         fontSize: 10,
-        marginHorizontal: 5
     },
     videoTitle: {
         color: ThemeColors.primaryColor,
-        // fontWeight: 'bold',
-        fontSize: 14,
+        fontWeight: 'bold',
+        fontSize: 12,
     },
     actionButtonContainer: {
-        justifyContent: 'center', 
+        justifyContent: 'center',
     },
     actionButton: {
-        width: (9.33 * DEVICE_WIDTH) / 100,
-        height: (9.33 * DEVICE_WIDTH) / 100,
+        width: (12 * DEVICE_WIDTH) / 100,
+        height: (12 * DEVICE_WIDTH) / 100,
+        marginLeft: 5,
         backgroundColor: ThemeColors.primaryColor,
         borderRadius: 50
     },
     playPauseButton:
     {
+        tintColor: ThemeColors.primaryColor,
+        flex: 1,
         width: (18.67 * DEVICE_WIDTH) / 100,
         height: (18.67 * DEVICE_WIDTH) / 100
     },
@@ -1129,7 +1197,7 @@ const styles = StyleSheet.create({
     },
     videoOverlayCol1: {
         // flex: 1,
-        marginRight: 10,
+        // marginRight: 10,
         justifyContent: 'center'
     },
     itemOverlay: {
@@ -1144,9 +1212,19 @@ const styles = StyleSheet.create({
         // paddingBottom: 20
     },
     videoListItem: {
-        width: (DEVICE_WIDTH / 3),
-        height: (DEVICE_WIDTH / 3),
+        shadowRadius: 2,
+        shadowOffset: {
+            width: 0,
+            height: 5,
+        },
+        shadowColor: ThemeColors.highlightsColor,
+        elevation: 0.1,
+        shadowOpacity: 0.1,
+        width: (DEVICE_WIDTH / 3.3),
+        height: (DEVICE_WIDTH / 3.3),
         backgroundColor: ThemeColors.backgroundColor,
+        marginBottom: 5,
+        borderRadius: 10,
         // height: 100,
         // borderColor: ThemeColors.secondaryColor,
         // borderWidth: 0.5
