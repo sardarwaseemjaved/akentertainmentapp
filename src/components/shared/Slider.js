@@ -1,5 +1,7 @@
 import React, { PureComponent } from 'react';
 
+import ThemeColors from './../../styles/colors';
+
 import {
   Animated,
   Image,
@@ -23,7 +25,7 @@ function Rect(x, y, width, height) {
   this.height = height;
 }
 
-Rect.prototype.containsPoint = function(x, y) {
+Rect.prototype.containsPoint = function (x, y) {
   return (
     x >= this.x &&
     y >= this.y &&
@@ -216,6 +218,7 @@ export default class Slider extends PureComponent {
 
   render() {
     const {
+      hideThumb = false,
       minimumValue,
       maximumValue,
       minimumTrackTintColor,
@@ -290,6 +293,7 @@ export default class Slider extends PureComponent {
           onLayout={this._measureThumb}
           renderToHardwareTextureAndroid
           style={[
+            hideThumb && { opacity: 0 },
             { backgroundColor: thumbTintColor },
             mainStyles.thumb,
             thumbStyle,
@@ -429,12 +433,12 @@ export default class Slider extends PureComponent {
         Math.min(
           this.props.maximumValue,
           this.props.minimumValue +
-            Math.round(
-              ratio *
-                (this.props.maximumValue - this.props.minimumValue) /
-                this.props.step,
-            ) *
-              this.props.step,
+          Math.round(
+            ratio *
+            (this.props.maximumValue - this.props.minimumValue) /
+            this.props.step,
+          ) *
+          this.props.step,
         ),
       );
     }
@@ -443,7 +447,7 @@ export default class Slider extends PureComponent {
       Math.min(
         this.props.maximumValue,
         ratio * (this.props.maximumValue - this.props.minimumValue) +
-          this.props.minimumValue,
+        this.props.minimumValue,
       ),
     );
   };
@@ -531,10 +535,10 @@ export default class Slider extends PureComponent {
 
     return new Rect(
       touchOverflowSize.width / 2 +
-        this._getThumbLeft(this._getCurrentValue()) +
-        (state.thumbSize.width - props.thumbTouchSize.width) / 2,
+      this._getThumbLeft(this._getCurrentValue()) +
+      (state.thumbSize.width - props.thumbTouchSize.width) / 2,
       touchOverflowSize.height / 2 +
-        (state.containerSize.height - props.thumbTouchSize.height) / 2,
+      (state.containerSize.height - props.thumbTouchSize.height) / 2,
       props.thumbTouchSize.width,
       props.thumbTouchSize.height,
     );
@@ -571,15 +575,29 @@ var defaultStyles = StyleSheet.create({
     // height: 40,
     justifyContent: 'center',
   },
+  // track: {
+  //   height: TRACK_SIZE,
+  //   borderRadius: TRACK_SIZE / 2,
+  // },
+  // thumb: {
+  //   position: 'absolute',
+  //   width: THUMB_SIZE,
+  //   height: THUMB_SIZE,
+  //   borderRadius: THUMB_SIZE / 2,
+  // },
   track: {
-    height: TRACK_SIZE,
-    borderRadius: TRACK_SIZE / 2,
+    height: 3,
+    borderRadius: 2,
+    backgroundColor: 'transparent',
+    borderColor: ThemeColors.primaryColorRgba + '0.5)',
+    borderWidth: 0.3,
   },
   thumb: {
     position: 'absolute',
-    width: THUMB_SIZE,
-    height: THUMB_SIZE,
-    borderRadius: THUMB_SIZE / 2,
+    width: 3,
+    height: 8,
+    borderRadius: 2,
+    backgroundColor: ThemeColors.primaryColor,
   },
   touchArea: {
     position: 'absolute',

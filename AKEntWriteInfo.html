@@ -1,0 +1,82 @@
+<html>
+
+<head>
+    <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-firestore.js"></script>
+    <title>Title of the document</title>
+</head>
+
+<body onload="init()">
+    The content of the document......
+
+</body>
+
+</html>
+<script>
+    function init() {
+        const vidList = [
+            { 
+                "name": "Match lagiya fer",
+                "thumbnail": "https://images-na.ssl-images-amazon.com/images/I/714zt-AmxHL._RI_.jpg",
+                "url": "https://res.cloudinary.com/db6evrrlt/video/upload/v1586137905/3_Idiots-lq_ldvl61.mp4",
+                "originalMovieName": "3 Idiots",
+                "performers": "Waseem Javed, Iffyan Ghazni, Usman Khan",
+                "releaseDate": "21, Jan 2019"
+            },
+            { 
+                "name": "Afridi interview",
+                "thumbnail": "https://kashmirpulse.com/wp-content/uploads/2016/12/66f97-icc2bworld2bt202bpost-match252c2bafridi2bthanks2bkashmir2bagain.jpg",
+                "url": "https://res.cloudinary.com/db6evrrlt/video/upload/v1586138111/Afridi_x0whlq.mp4",
+                "originalMovieName": "",
+                "performers": "Waseem Javed",
+                "releaseDate": "21, Mar 2018"
+            },
+            {
+                "id": "AK-Ent-V01",
+                "name": "Mosu na Bya",
+                "thumbnail": "https://m.media-amazon.com/images/M/MV5BNGI5YTE0MzMtYmJlMi00ZWZkLWI5ZTYtNzhlYjc1MjYwOTUzXkEyXkFqcGdeQXVyMjY1MjkzMjE@._V1_.jpg",
+                "url": "https://res.cloudinary.com/db6evrrlt/video/upload/v1586138166/Mosu_final_djz1uy.mp4",
+                "originalMovieName": "Singh is king",
+                "performers": "Waseem Javed, Adnan Altaf",
+                "releaseDate": "24, Apr 2019"
+            },
+            {
+                "id": "antriksh-2",
+                "name": "Antriksh na shahrukh khan - Part 2",
+                "thumbnail": "https://www.popzara.com/wp-content/uploads/2011/03/paul2011_feature.jpg",
+                "url": "https://video-ort2-2.xx.fbcdn.net/v/t39.24130-2/10000000_855877591547883_8606448008403927448_n.mp4?_nc_cat=106&_nc_sid=985c63&efg=eyJ2ZW5jb2RlX3RhZyI6Im9lcF9oZCJ9&_nc_ohc=u6rS_HEOLqsAX_TCH_1&_nc_ht=video-ort2-2.xx&oh=517f58629bf0ae125f8f12be11c5e414&oe=5ECDE957",
+                "originalMovieName": "Paul",
+                "performers": "Waseem Javed, Adnan Altaf",
+                "releaseDate": "28, Apr 2020"
+            },
+            {
+                "id": "imran-khan-press",
+                "name": "Imran khan press conference",
+                "thumbnail": "https://i.dawn.com/primary/2017/04/58f891f1012c9.jpg",
+                "url": "https://public.am.files.1drv.com/y4mUBv-eQ-4MRVX-rriOq4iMXFs8JvKfzM0IRMN_eiderGoouSF0ZVVzhBHWqF4Vk2YJCW6tpTVn94gw_a5ODkQjV-BTgC_Tj1bE8Ab9dF4E-ZeFJaTWbeTHLpSpMXvZc-TYa0NQanHYVk1SaaEW_3GgPHEMhEjKObAlYK_1ndPIqn4i-Yh-apJgJGF4qQIz4C2i-mW5oj_wjhFVqCHswY97o-wwHh4KETjskX6bj5hfho?access_token=EwAYA61DBAAUzl/nWKUlBg14ZGcybuC4/OHFdfEAATtOtj%2bvsAysP%2bd3lLelCXftCBjG2IDyB%2bzm69sIM1FGgOA6AQwRfpzXA9Ad%2bOlLQ/MwOZZ3GeiS%2bfEGJHn2zwWENPE0TED9H/PSo3MtisEQ2uHvXGDhEJCeBwnxPoK27RFyhrfhfrXXE%2brPm3G/pceiTe6xXumcFi%2bP48fFZA2qbMObQwZrGJjhNHqZJQbWMd8y8JDj3BccMdj0bitIXA5l4zlYelU4RO5kPW5CAjwV8yLaofecxOf7m/lZjR0KcDcDQX9ZGAj302mjlcEqo6edGollPPaEqFa3vzs%2boGaqYucd4cwN6vtxOHLpMWMygEgfB24XNCFhYL4qOk6hLDADZgAACFB1CszOMibb6AHJj2USv5L%2bX2jLaQbYuEyaFWytOXxxKEr6NhnFbUT3Dv7e3rDJ8erk2ZKuhnw4zejgNEQdRbPIBFZKVMCL5BjVcQ94b1YJn8eDZMDOiOJLb5kveuKYnU0ejg/c9LwBwlk%2bzMem1o98kcyN%2bZJtPyy05ZS8Idyj/0bDFAzaQAnMltGRRu4tVyYuV0Ik2FKT7645aqgCwOV2qgyByy8Hv5nKfDOMdQ0C48sAycBFOSigH60%2bs2c851TLP2N%2bojcaqgpsH/eLN2RdnF7JqAQtUKpD8mhAJTtvkwc5H5kZ58MEZqtZNeMXk206fSvyCqHS6964nH4CFWtcJ3kCeAks4m72AhM2ZIaAKlC8OT3SkrYYFpPMMnhf6gWYeU0GKAZ3nhmNi3HBxbFy47IcZMakQ1csBKztrd/UUBQV4fhXZzCb7BLiRZz5WuFIIhBX8vQ2zJdze0HMY4rPPXP2BKGvSW7%2bS52zccsKeVPNbiMqJHQ/LmvzlOdQczICfVadBUrwaQtQpnPF5lOhOxH/dIblOKyDJgxgwMh4MMvgkzBGjLiBwMTGdh7QEV4yquST5XhAhTbq1l9czv/1nvwZwM3P78VjBA3G7eha2Sr%2bCROx0%2bvHglGkzDAVrfb6vfVHLiypf/rrOfhnb4sxOyEC",
+                // "originalMovieName": "",
+                "performers": "Waseem Javed, Kashan Khan",
+                "releaseDate": "28, Jan 2016"
+            },
+        ]
+        try {
+            const firebaseConfig = {
+                apiKey: "AIzaSyC6wFB2w_YvuBQCR5n1cEC3jSBJX2Jmhkw",
+                authDomain: "ak-entertainment.firebaseapp.com",
+                databaseURL: "https://ak-entertainment.firebaseio.com",
+                projectId: "ak-entertainment",
+                storageBucket: "ak-entertainment.appspot.com",
+                messagingSenderId: "507720390016",
+                appId: "1:507720390016:web:cc614ae26903b900"
+            };
+            firebase.initializeApp(firebaseConfig);
+            var db = firebase.firestore();
+            vidList.forEach(element => {
+                db.collection("videos").add(element) 
+            });
+            console.log('Process completed')
+        } catch (error) {
+            console.log('error:', error)
+        }
+    }
+</script>

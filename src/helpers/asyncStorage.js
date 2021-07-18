@@ -4,6 +4,10 @@ export const VIDEOS_KEY = 'videos';
 export const MESSAGES_KEY = 'localMessages';
 
 
+export const setVideoDownloadData = async (key, data) => await AsyncStorage.setItem(key, data);
+
+export const getVideoDownloadData = async (key) => JSON.parse(await AsyncStorage.getItem(key));
+
 export const setVideos = (videos) => AsyncStorage.setItem(VIDEOS_KEY, JSON.stringify(videos));
 
 export const getVideos = () => new Promise((resolve, reject) => {
